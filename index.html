@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестовая форма - Лабораторная работа №11</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #888;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Регистрация пользователя</h1>
+        
+        <form id="userForm">
+            <div class="form-group">
+                <label for="name">Имя:</label>
+                <input type="text" id="name" name="name" required placeholder="Введите ваше имя">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required placeholder="example@mail.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Возраст:</label>
+                <input type="number" id="age" name="age" required placeholder="18">
+            </div>
+            
+            <div class="form-group">
+                <label for="course">Курс:</label>
+                <select id="course" name="course">
+                    <option value="1">1 курс</option>
+                    <option value="2">2 курс</option>
+                    <option value="3">3 курс</option>
+                    <option value="4">4 курс</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="submitBtn">Зарегистрироваться</button>
+        </form>
+        
+        <div id="message" class="message"></div>
+        <div class="footer">
+            <p>Лабораторная работа №11 - CI/CD с GitHub Actions</p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const age = document.getElementById('age').value;
+            const messageDiv = document.getElementById('message');
+            
+            // Валидация
+            if (name.length < 2) {
+                showMessage('Имя должно содержать минимум 2 символа', 'error');
+                return;
+            }
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                showMessage('Введите корректный email', 'error');
+                return;
+            }
+            
+            if (age < 18 || age > 100) {
+                showMessage('Возраст должен быть от 18 до 100 лет', 'error');
+                return;
+            }
+            
+            // Успешная регистрация
+            showMessage(`Спасибо, ${name}! Вы успешно зарегистрированы на ${document.getElementById('course').value} курсе.`, 'success');
+            
+            // Очистка формы
+            setTimeout(() => {
+                document.getElementById('userForm').reset();
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 3000);
+            }, 2000);
+        });
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
